@@ -1,0 +1,132 @@
+spring:
+  application:
+    name: hie-gateway
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+      routes:
+        - id: auth
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/v1/auth/**,
+        - id: reports
+          uri: http://localhost:9000
+          predicates:
+            - Path=/api/v1/reports/**
+        - id: graphql-reports
+          uri: http://localhost:9000
+          predicates:
+            - Path=/graphql/**
+        - id: client
+          uri: http://localhost:9002
+          predicates:
+            - Path=/api/v1/clients/**
+        - id: referral
+          uri: http://localhost:9003
+          predicates:
+            - Path=/api/v1/referral/**
+        - id: lis
+          uri: http://localhost:9010
+          predicates:
+            - Path=/api/v1/lis-service/**
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    urls:
+      - name: auth
+        url: http://localhost:8089/v3/api-docs
+      - name: reports
+        url: http://localhost:9000/v3/api-docs
+      - name: client
+        url: http://localhost:9002/v3/api-docs
+      - name: referral
+        url: http://localhost:9003/v3/api-docs
+      - name: lis
+        url: http://localhost:9010/v3/api-docs
+    path: /swagger-ui.html
+
+server:
+  port: 7080
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: ${ALLOWED_ORIGINS}
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: auth
+          uri: ${AUTH_URI}
+          predicates:
+            - Path=/api/v1/auth/**,
+        - id: reports
+          uri: ${REPORTS_URI}
+          predicates:
+            - Path=/api/v1/reports/**, /graphql/**
+        - id: client
+          uri: ${CLIENT_URI}
+          predicates:
+            - Path=/api/v1/clients/**
+        - id: referral
+          uri: ${REFERRAL_URI}
+          predicates:
+            - Path=/api/v1/referral/**
+        - id: lis
+          uri: ${LIS_URI}
+          predicates:
+            - Path=/api/v1/lis-service/**
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    urls:
+      - name: auth
+        url: ${AUTH_DOCS_URL}/v3/api-docs
+      - name: reports
+        url: ${REPORTS_DOCS_URL}/v3/api-docs
+      - name: client
+        url: ${CLIENT_DOCS_URL}/v3/api-docs
+      - name: referral
+        url: ${REFERRAL_DOCS_URL}/v3/api-docs
+      - name: lis
+        url: ${LIS_DOCS_URL}/v3/api-docs
+    path: /swagger-ui.html
+
+server:
+  port: ${SERVER_PORT}
