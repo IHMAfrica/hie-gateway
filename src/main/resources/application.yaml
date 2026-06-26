@@ -1,6 +1,11 @@
 spring:
   application:
     name: hie-gateway
+logging:
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n]"
+  level:
+    root: error
 ---
 spring:
   config:
@@ -46,6 +51,10 @@ spring:
           uri: http://localhost:9010
           predicates:
             - Path=/api/v1/lis-service/**
+        - id: pharmacy
+          uri: http://localhost:9011
+          predicates:
+            - Path=/api/v1/pharmacy/**
 
 springdoc:
   api-docs:
@@ -63,6 +72,8 @@ springdoc:
         url: http://localhost:9003/v3/api-docs
       - name: lis
         url: http://localhost:9010/v3/api-docs
+      - name: pharmacy
+        url: http://localhost:9011/v3/api-docs
     path: /swagger-ui.html
 
 server:
@@ -109,6 +120,10 @@ spring:
           uri: ${LIS_URI}
           predicates:
             - Path=/api/v1/lis-service/**
+        - id: pharmacy
+          uri: ${PHARMACY_URI}
+          predicates:
+            - Path=/api/v1/pharmacy/**
 
 springdoc:
   api-docs:
@@ -126,6 +141,8 @@ springdoc:
         url: ${REFERRAL_DOCS_URL}/v3/api-docs
       - name: lis
         url: ${LIS_DOCS_URL}/v3/api-docs
+      - name: pharmacy
+        url: ${PHARMACY_URL}/v3/api-docs
     path: /swagger-ui.html
 
 server:
