@@ -85,20 +85,27 @@ spring:
       on-profile: prod
   cloud:
     gateway:
+      default-filters:
+        - name: AddResponseHeader
+          args:
+            name: "Referrer-Policy"
+            value: "no-referrer-when-downgrade"
       globalcors:
         add-to-simple-url-handler-mapping: true
         cors-configurations:
           '[/**]':
-            allowedOrigins: ${ALLOWED_ORIGINS}
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-              - PATCH
+            allowed-origin-patterns:
+              - ${ALLOWED_ORIGINS}
+            allowed-methods:
+              - "*"
             allowedHeaders: "*"
             allowCredentials: true
+            max-age: 3600
+      x-forwarded:
+        enabled: true
+        for-enabled: true
+        proto-enabled: true
+        host-enabled: true
       routes:
         - id: auth
           uri: ${AUTH_URI}
@@ -147,3 +154,4 @@ springdoc:
 
 server:
   port: ${SERVER_PORT}
+  forward-headers-strategy: framework
