@@ -139,17 +139,17 @@ springdoc:
     enabled: true
     urls:
       - name: auth
-        url: ${AUTH_DOCS_URL}/v3/api-docs
+        url: ${AUTH_URI}/v3/api-docs
       - name: reports
-        url: ${REPORTS_DOCS_URL}/v3/api-docs
+        url: ${REPORTS_URI}/v3/api-docs
       - name: client
-        url: ${CLIENT_DOCS_URL}/v3/api-docs
+        url: ${CLIENT_URI}/v3/api-docs
       - name: referral
-        url: ${REFERRAL_DOCS_URL}/v3/api-docs
+        url: ${REFERRAL_URI}/v3/api-docs
       - name: lis
-        url: ${LIS_DOCS_URL}/v3/api-docs
+        url: ${LIS_URI}/v3/api-docs
       - name: pharmacy
-        url: ${PHARMACY_URL}/v3/api-docs
+        url: ${PHARMACY_URI}/v3/api-docs
     path: /swagger-ui.html
 
 server:
